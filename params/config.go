@@ -29,6 +29,7 @@ import (
 // Genesis hashes to enforce below configs on.
 var (
 	MainnetGenesisHash = common.HexToHash("0xe8186a2e15328b38547348dec5d25b051bc1d17681c66b8c8ac15c06afa223c6") //Chenged
+	CypheriumGenesisHash = common.HexToHash("0xe8186a2e15328b38547348dec5d25b051bc1d17681c66b8c8ac15c06afa223c6")
 	RopstenGenesisHash = common.HexToHash("0x1d2bc30c28ad041bc4e426dfe92327d5dff58d442d671106e32309d4e374bd85")
 	RinkebyGenesisHash = common.HexToHash("0x6341fd3daf94b748c72ced5a5b26028f2474f5f00d824504e4fa37a75767e177")
 	GoerliGenesisHash  = common.HexToHash("0xbf7e331f7f7c1dd2e05159666b3bf8bc7a8a3a9eb1d518969eab529dd9b88c1a")
@@ -39,6 +40,7 @@ var (
 // the chain it belongs to.
 var TrustedCheckpoints = map[common.Hash]*TrustedCheckpoint{
 	MainnetGenesisHash: MainnetTrustedCheckpoint,
+	CypheriumGenesisHash: CypheriumTrustedCheckpoint,
 	RopstenGenesisHash: RopstenTrustedCheckpoint,
 	RinkebyGenesisHash: RinkebyTrustedCheckpoint,
 	GoerliGenesisHash:  GoerliTrustedCheckpoint,
@@ -47,7 +49,8 @@ var TrustedCheckpoints = map[common.Hash]*TrustedCheckpoint{
 // CheckpointOracles associates each known checkpoint oracles with the genesis hash of
 // the chain it belongs to.
 var CheckpointOracles = map[common.Hash]*CheckpointOracleConfig{
-//	MainnetGenesisHash: MainnetCheckpointOracle,
+	MainnetGenesisHash: MainnetCheckpointOracle,
+	CypheriumGenesisHash: CypheriumCheckpointOracle,
 	RopstenGenesisHash: RopstenCheckpointOracle,
 	RinkebyGenesisHash: RinkebyCheckpointOracle,
 	GoerliGenesisHash:  GoerliCheckpointOracle,
@@ -80,17 +83,50 @@ var (
       }
 
 	// MainnetCheckpointOracle contains a set of configs for the main network oracle.
-//	MainnetCheckpointOracle = &CheckpointOracleConfig{
-//		Address: common.HexToAddress("0x9a9070028361F7AAbeB3f2F2Dc07F82C4a98A02a"),
-//		Signers: []common.Address{
-//			common.HexToAddress("0x1b2C260efc720BE89101890E4Db589b44E950527"), // Peter
-//			common.HexToAddress("0x78d1aD571A1A09D60D9BBf25894b44e4C8859595"), // Martin
-//			common.HexToAddress("0x286834935f4A8Cfb4FF4C77D5770C2775aE2b0E7"), // Zsolt
-//			common.HexToAddress("0xb86e2B0Ab5A4B1373e40c51A7C712c70Ba2f9f8E"), // Gary
-//			common.HexToAddress("0x0DF8fa387C602AE62559cC4aFa4972A7045d6707"), // Guillaume
-//		},
-//		Threshold: 2,
-//	}
+	MainnetCheckpointOracle = &CheckpointOracleConfig{
+		Address: common.HexToAddress("0x9a9070028361F7AAbeB3f2F2Dc07F82C4a98A02a"),
+		Signers: []common.Address{
+			common.HexToAddress("0x1b2C260efc720BE89101890E4Db589b44E950527"), // Peter
+			common.HexToAddress("0x78d1aD571A1A09D60D9BBf25894b44e4C8859595"), // Martin
+			common.HexToAddress("0x286834935f4A8Cfb4FF4C77D5770C2775aE2b0E7"), // Zsolt
+			common.HexToAddress("0xb86e2B0Ab5A4B1373e40c51A7C712c70Ba2f9f8E"), // Gary
+			common.HexToAddress("0x0DF8fa387C602AE62559cC4aFa4972A7045d6707"), // Guillaume
+		},
+		Threshold: 2,
+	}
+
+		// CypheriumChainConfig is the chain parameters to run a node on the Cypherium network.
+	CypheriumChainConfig = &ChainConfig{
+		ChainID:             big.NewInt(16166),
+		HomesteadBlock:      big.NewInt(0),
+		DAOForkBlock:        big.NewInt(0),
+		DAOForkSupport:      true,
+		EIP150Block:         big.NewInt(0),
+		EIP150Hash:          common.HexToHash("0xe8186a2e15328b38547348dec5d25b051bc1d17681c66b8c8ac15c06afa223c6"), //Chaneged
+		EIP155Block:         big.NewInt(0),
+		EIP158Block:         big.NewInt(0),
+		ByzantiumBlock:      big.NewInt(0),
+		ConstantinopleBlock: big.NewInt(0),
+		PetersburgBlock:     big.NewInt(0),
+		IstanbulBlock:       big.NewInt(0),
+		MuirGlacierBlock:    big.NewInt(0),
+		Ethash:              new(EthashConfig)}
+
+	// TrustedCheckpoint contains the light client trusted checkpoint for the Cypherium network.
+	CypheriumTrustedCheckpoint = &TrustedCheckpoint{
+          SectionIndex: 182, // Block 182,529 section index (182,529 ÷ 1000 ≈ 182)
+          SectionHead:  common.HexToHash("0x32d96527ae12d49f4cd75d4446cece1324dcc4d54d63f48ddbec7596ab7a061b"),
+          CHTRoot:      common.HexToHash("0x997a477225b460cdc2f92a0e6abb16823144af38836254f99a5a4a58aab1e5bd"),
+          BloomRoot:    common.HexToHash("0x0000000000000000000000000000000000000000000000000000000000000000"),
+      }
+
+	// CYpheriumCheckpointOracle contains a set of configs for the Cypherium network oracle.
+	CypheriumCheckpointOracle = &CheckpointOracleConfig{
+CypheriumCheckpointOracle = &CheckpointOracleConfig{
+	Address:  common.Address{},     
+	Signers:  []common.Address{}, 
+	Threshold: 0,                  
+}
 
 	// RopstenChainConfig contains the chain parameters to run a node on the Ropsten test network.
 	RopstenChainConfig = &ChainConfig{
